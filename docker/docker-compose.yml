@@ -17,8 +17,7 @@ services:
     image: redis:alpine
 
   frappe:
-    image: frappe/bench:latest
-    command: bash /workspace/init.sh
+    image: nhan2102/lms:aws
     environment:
       - SHELL=/bin/bash
     working_dir: /home/frappe
