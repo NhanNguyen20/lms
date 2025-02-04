@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mariadb
+  name: mariadb-deployment
   labels:
     app: mariadb
 spec:
@@ -38,51 +38,16 @@ spec:
           persistentVolumeClaim:
             claimName: mariadb-pvc
 
-
-apiVersion: v1
-kind: Pod
-metadata:
-  name: mariadb-pod
-  labels:
-    name: mariadb-pod
-    app: webapp
-spec:
-  containers:
-    - name: mariadb
-      image: mariadb:10.8
-      args:
-        - "--character-set-server=utf8mb4"
-        - "--collation-server=utf8mb4_unicode_ci"
-        - "--skip-character-set-client-handshake"
-        - "--skip-innodb-read-only-compressed"
-      env:
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            configMapKeyRef:
-              name: mariadb-config
-              key: MYSQL_ROOT_PASSWORD
-      volumeMounts:
-        - name: mariadb-data
-          mountPath: /var/lib/mysql
-      ports:
-        - containerPort: 3306
-  volumes:
-    - name: mariadb-data
-      persistentVolumeClaim:
-        claimName: mariadb-pvc
-
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mariadb-service
+  name: mariadb
   labels:
-    name: mariadb-service
-    app: webapp
+    app: mariadb
 spec:
   selector:
-    name: mariadb-pod
-    app: webapp
+    app: mariadb
   ports:
     - port: 3306
       targetPort: 3306

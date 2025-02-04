@@ -1,14 +1,12 @@
-# Use the official Frappe Bench image as a parent image
-FROM frappe/bench:latest
+FROM nhan2102/bench:latest
 
-# Copy the init.sh script into the container
 COPY ./init.sh /init.sh
 
-# Make the init.sh script executable
 RUN sudo chmod +x /init.sh
 
 # Set the working directory in the container
 WORKDIR /home/frappe
 
-# Run the init.sh script
+EXPOSE 8000 9000
+
 CMD ["/bin/bash", "/init.sh"]
